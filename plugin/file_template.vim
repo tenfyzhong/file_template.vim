@@ -68,6 +68,9 @@ endfunction
 
 function! InsertTemplateContent()
     let l:type = expand('%:e')
+    if l:type == ""
+        return
+    endif
     let l:lines = GetTemplate(l:type)
     call append(0, l:lines)
 endfunction
