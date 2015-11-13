@@ -43,7 +43,6 @@ endif
 
 function! InsertTemplate(type)
     let l:filename = s:locale_template_dir . a:type . '.template'
-    echom "filename:" . l:filename
     if filereadable(l:filename)
         let l:lines = readfile(l:filename)
         let g:file_template_map[a:type] = l:lines
@@ -69,7 +68,6 @@ endfunction
 
 function! InsertTemplateContent()
     let l:type = expand('%:e')
-    echom "type:" . l:type
     let l:lines = GetTemplate(l:type)
     call append(0, l:lines)
 endfunction
