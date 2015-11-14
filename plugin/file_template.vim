@@ -42,7 +42,7 @@ if s:MSWIN
 endif
 
 function! InsertTemplate(type)
-    let l:filename = s:locale_template_dir . a:type . '.template'
+    let l:filename = s:locale_template_dir . a:type . '.ftemplate'
     if filereadable(l:filename)
         let l:lines = readfile(l:filename)
         let g:file_template_map[a:type] = l:lines
