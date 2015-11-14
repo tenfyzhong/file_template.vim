@@ -57,11 +57,11 @@ function! InitStaticMacro(macro_file)
         let l:lines = readfile(a:macro_file)
         for l in l:lines
             let l:items = matchlist(l, '^\(|\w*|\)\s*=\s*\([^|]\S.*[^|]\)\s*$')
-            if len(l:items) < 3
+            if len(l:items) < 2
                 continue
             endif
-            let l:macro = l:items[1]
-            let l:value = l:items[2]
+            let l:macro = get(l:items, 1, '')
+            let l:value = get(l:items, 2, '')
             let s:macro_value_map[l:macro] = l:value
         endfor
     endif
@@ -72,12 +72,12 @@ function! InitDynamicMacro()
     let l:datetime      = strftime("%Y %m %d %T")
     let l:time_itmes    = split(l:datetime)
     if len(l:time_itmes) >= 4
-        let s:macro_value_map['YEAR']   = l:time_itmes[0]
-        let s:macro_value_map['MONTH']  = l:time_itmes[1]
-        let s:macro_value_map['DAY']    = l:time_itmes[2]
-        let s:macro_value_map['TIME']   = l:time_itmes[3]
+        let s:macro_value_map['|YEAR|']   = l:time_itmes[0]
+        let s:macro_value_map['|MONTH|']  = l:time_itmes[1]
+        let s:macro_value_map['|DAY|']    = l:time_itmes[2]
+        let s:macro_value_map['|TIME|']   = l:time_itmes[3]
     endif
-    let s:macro_value_map['FILE'] = expand('%:t')
+    let s:macro_value_map['|FILE|'] = expand('%:t')
 endfunction
 
 function! InsertTemplate(type)
@@ -116,7 +116,17 @@ function! InsertTemplateContent()
     call InitDynamicMacro()
 
     let l:lines = GetTemplate(l:type)
-    call append(0, l:lines)
+    let l:sub_macro_lines = []
+    for l in l:lines
+        let l:after_macro = l
+        let l:keys = keys(s:macro_value_map)
+        for k in l:keys
+            let l:value = get(s:macro_value_map, k, '')
+            let l:after_macro = substitute(l:after_macro, k, l:value, 'g')
+        endfor
+        call add(l:sub_macro_lines, l:after_macro)
+    endfor
+    call append(0, l:sub_macro_lines)
 endfunction
 
 augroup file_template
