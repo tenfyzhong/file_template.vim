@@ -1,11 +1,11 @@
-"==========================================================================
+"==============================================================
 " File: file_template.vim
-" Description: 根据文件后缀，自动生成对应的模板内容
+" Brief: 根据文件后缀，自动生成对应的模板内容
 " VIM Version: 7.0+
 " Author:       tenfyzhong
 " Version:
-" Created: 2015-11-9
-"==========================================================================
+" Date: 2015-11-9
+"==============================================================
 
 if v:version < 700
     echohl WarningMsg | echo 'plugin file_template.vim needs Vim version >= 7' | echohl None
@@ -18,7 +18,7 @@ endif
 
 let g:FILE_TEMPLATE_VERSION = "1.0.0"
 
-"===  FUNCTION  ============================================================
+"===  FUNCTION  ===============================================
 
 let s:MSWIN = has("win16") || has("win32")   || has("win64") || has("w       in95")
 let s:UNIX  = has("unix")  || has("macunix") || has("win32unix")
