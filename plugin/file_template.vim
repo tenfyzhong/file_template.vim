@@ -31,6 +31,7 @@ let s:locale_template_define    = s:plugin_dir . '/templates/macro'
 let g:file_template_map     = {}
 let s:file_no_template_map  = {}
 let s:macro_value_map       = {}
+let s:has_init_macro        = 0
 
 if s:MSWIN
     " ============ MS Windows ================
@@ -44,6 +45,39 @@ endif
 
 function! SetMacro(macro, value)
     let s:macro_value_map[a:macro] = a:value
+endfunction
+
+function! InitStaticMacro(macro_file)
+    if s:has_init_macro == 1
+        return
+    endif
+
+    if filereadable(a:macro_file)
+        let s:has_init_macro = 1
+        let l:lines = readfile(a:macro_file)
+        for l in l:lines
+            let l:items = matchlist(l, '^\(|\w*|\)\s*=\s*\([^|]\S.*[^|]\)\s*$')
+            if len(l:items) < 3
+                continue
+            endif
+            let l:macro = l:items[1]
+            let l:value = l:items[2]
+            let s:macro_value_map[l:macro] = l:value
+        endfor
+    endif
+endfunction
+
+function! InitDynamicMacro()
+    " init time use function strftime
+    let l:datetime      = strftime("%Y %m %d %T")
+    let l:time_itmes    = split(l:datetime)
+    if len(l:time_itmes) >= 4
+        let s:macro_value_map['YEAR']   = l:time_itmes[0]
+        let s:macro_value_map['MONTH']  = l:time_itmes[1]
+        let s:macro_value_map['DAY']    = l:time_itmes[2]
+        let s:macro_value_map['TIME']   = l:time_itmes[3]
+    endif
+    let s:macro_value_map['FILE'] = expand('%:t')
 endfunction
 
 function! InsertTemplate(type)
@@ -71,11 +105,16 @@ function! GetTemplate(type)
     return g:file_template_map[a:type]
 endfunction
 
+
 function! InsertTemplateContent()
     let l:type = expand('%:e')
     if l:type == ""
         return
     endif
+
+    call InitStaticMacro(s:locale_template_define)
+    call InitDynamicMacro()
+
     let l:lines = GetTemplate(l:type)
     call append(0, l:lines)
 endfunction
