@@ -26,10 +26,11 @@ let s:UNIX  = has("unix")  || has("macunix") || has("win32unix")
 let s:installation              = '*undefined*' 
 let s:plugin_dir                = expand('<sfile>:p:h:h')
 let s:locale_template_dir       = s:plugin_dir . '/templates/'
-let s:locale_template_define    = s:plugin_dir . '/templates/define.vim'
+let s:locale_template_define    = s:plugin_dir . '/templates/macro'
 
-let g:file_template_map = {}
-let s:file_no_template_map = {}
+let g:file_template_map     = {}
+let s:file_no_template_map  = {}
+let s:macro_value_map       = {}
 
 if s:MSWIN
     " ============ MS Windows ================
@@ -40,6 +41,10 @@ if s:MSWIN
         let s:plugin_dir        = substitute(s:plugin_dir, '\', '/', 'g')
     endif
 endif
+
+function! SetMacro(macro, value)
+    let s:macro_value_map[a:macro] = a:value
+endfunction
 
 function! InsertTemplate(type)
     let l:filename = s:locale_template_dir . a:type . '.ftemplate'
