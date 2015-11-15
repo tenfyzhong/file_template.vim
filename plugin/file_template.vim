@@ -75,6 +75,7 @@ function! InitDynamicMacro()
         let s:macro_value_map['|TIME|']   = l:time_itmes[3]
     endif
     let s:macro_value_map['|FILE|'] = expand('%:t')
+    let s:macro_value_map['|DATETIME|'] = l:time_itmes[0] . '-' . l:time_itmes[1] . '-' . l:time_itmes[2] . ' ' . l:time_itmes[3]
 endfunction
 
 function! InsertTemplate(type)
