@@ -52,7 +52,7 @@ function! InitStaticMacro(macro_file)
         let s:has_init_macro = 1
         let l:lines = readfile(a:macro_file)
         for l in l:lines
-            let l:items = matchlist(l, '^\(|\w*|\)\s*=\s*\(.*\)\s*$')
+            let l:items = matchlist(l, '^\s*\(|\w*|\)\s*=\s*\(.*\)\s*$')
             if len(l:items) < 2
                 continue
             endif
