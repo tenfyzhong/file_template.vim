@@ -43,10 +43,6 @@ if s:MSWIN
     endif
 endif
 
-function! SetMacro(macro, value)
-    let s:macro_value_map[a:macro] = a:value
-endfunction
-
 function! InitStaticMacro(macro_file)
     if s:has_init_macro == 1
         return
@@ -56,12 +52,13 @@ function! InitStaticMacro(macro_file)
         let s:has_init_macro = 1
         let l:lines = readfile(a:macro_file)
         for l in l:lines
-            let l:items = matchlist(l, '^\(|\w*|\)\s*=\s*\([^|]\S.*[^|]\)\s*$')
+            let l:items = matchlist(l, '^\(|\w*|\)\s*=\s*\(.*\)\s*$')
             if len(l:items) < 2
                 continue
             endif
             let l:macro = get(l:items, 1, '')
             let l:value = get(l:items, 2, '')
+            let l:value = substitute(l:value, '|', '_', 'g')
             let s:macro_value_map[l:macro] = l:value
         endfor
     endif
