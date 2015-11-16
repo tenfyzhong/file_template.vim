@@ -1,0 +1,14 @@
+#!/bin/bash -
+#############################################
+# file: |FILE|
+# usage: ./|FILE|
+# description:
+# author: |AUTHOR|
+# day: |DATETIME|
+# email: |EMAIL|
+#
+#############################################
+
+set -o nounset                              # Treat unset variables as an error
+
+
