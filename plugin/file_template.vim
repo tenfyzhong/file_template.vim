@@ -28,7 +28,7 @@ let s:plugin_dir                = expand('<sfile>:p:h:h')
 let s:locale_template_dir       = s:plugin_dir . '/templates/'
 let s:locale_template_define    = s:plugin_dir . '/templates/macro'
 
-let g:file_template_map     = {}
+let s:file_template_map     = {}
 let s:file_no_template_map  = {}
 let s:macro_value_map       = {}
 let s:has_init_macro        = 0
@@ -82,7 +82,7 @@ function! InsertTemplate(type)
     let l:filename = s:locale_template_dir . a:type . '.ftemplate'
     if filereadable(l:filename)
         let l:lines = readfile(l:filename)
-        let g:file_template_map[a:type] = l:lines
+        let s:file_template_map[a:type] = l:lines
         return 1
     endif
     return 0
@@ -93,14 +93,14 @@ function! GetTemplate(type)
         return []
     endif
 
-    if !has_key(g:file_template_map, a:type)
+    if !has_key(s:file_template_map, a:type)
         if !InsertTemplate(a:type)
             let s:file_no_template_map[a:type] = 1
             return []
         endif
     endif
 
-    return g:file_template_map[a:type]
+    return s:file_template_map[a:type]
 endfunction
 
 
