@@ -32,6 +32,7 @@ let s:file_template_map     = {}
 let s:file_no_template_map  = {}
 let s:macro_value_map       = {}
 let s:has_init_macro        = 0
+let s:has_init_ignore_suffix = 0
 
 if s:MSWIN
     " ============ MS Windows ================
@@ -103,6 +104,18 @@ function! GetTemplate(type)
     return s:file_template_map[a:type]
 endfunction
 
+function! InsertIgnoreFileSuffx()
+    if s:has_init_ignore_suffix == 0
+        let s:has_init_ignore_suffix = 1
+
+        if exists("g:file_template_ignore_file_suffix")
+            for suffix in g:file_template_ignore_file_suffix
+                let s:file_no_template_map[suffix] = 1
+            endfor
+        endif
+    endif
+endfunction
+
 
 function! InsertTemplateContent()
     let l:type = expand('%:e')
@@ -110,6 +123,7 @@ function! InsertTemplateContent()
         return
     endif
 
+    call InsertIgnoreFileSuffx()
     call InitStaticMacro(s:locale_template_define)
     call InitDynamicMacro()
 
