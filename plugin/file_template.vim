@@ -116,6 +116,8 @@ function! InsertIgnoreFileSuffx()
     endif
 endfunction
 
+call InsertIgnoreFileSuffx()
+call InitStaticMacro(s:locale_template_define)
 
 function! InsertTemplateContent()
     let l:type = expand('%:e')
@@ -123,8 +125,6 @@ function! InsertTemplateContent()
         return
     endif
 
-    call InsertIgnoreFileSuffx()
-    call InitStaticMacro(s:locale_template_define)
     call InitDynamicMacro()
 
     let l:lines = GetTemplate(l:type)
