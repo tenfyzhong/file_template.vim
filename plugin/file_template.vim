@@ -44,7 +44,7 @@ if s:MSWIN
     endif
 endif
 
-function! InitStaticMacro(macro_file)
+function! s:InitStaticMacro(macro_file)
     if s:has_init_macro == 1
         return
     endif
@@ -65,7 +65,7 @@ function! InitStaticMacro(macro_file)
     endif
 endfunction
 
-function! InitDynamicMacro()
+function! s:InitDynamicMacro()
     " init time use function strftime
     let l:datetime      = strftime("%Y %m %d %T")
     let l:time_itmes    = split(l:datetime)
@@ -79,7 +79,7 @@ function! InitDynamicMacro()
     let s:macro_value_map['|DATETIME|'] = l:time_itmes[0] . '-' . l:time_itmes[1] . '-' . l:time_itmes[2] . ' ' . l:time_itmes[3]
 endfunction
 
-function! InsertTemplate(type)
+function! s:InsertTemplate(type)
     let l:filename = s:locale_template_dir . a:type . '.ftemplate'
     if filereadable(l:filename)
         let l:lines = readfile(l:filename)
@@ -89,13 +89,13 @@ function! InsertTemplate(type)
     return 0
 endfunction
 
-function! GetTemplate(type)
+function! s:GetTemplate(type)
     if has_key(s:file_no_template_map, a:type)
         return []
     endif
 
     if !has_key(s:file_template_map, a:type)
-        if !InsertTemplate(a:type)
+        if !<SID>InsertTemplate(a:type)
             let s:file_no_template_map[a:type] = 1
             return []
         endif
@@ -104,7 +104,7 @@ function! GetTemplate(type)
     return s:file_template_map[a:type]
 endfunction
 
-function! InsertIgnoreFileSuffx()
+function! s:InsertIgnoreFileSuffx()
     if s:has_init_ignore_suffix == 0
         let s:has_init_ignore_suffix = 1
 
@@ -116,18 +116,18 @@ function! InsertIgnoreFileSuffx()
     endif
 endfunction
 
-call InsertIgnoreFileSuffx()
-call InitStaticMacro(s:locale_template_define)
+call <SID>InsertIgnoreFileSuffx()
+call <SID>InitStaticMacro(s:locale_template_define)
 
-function! InsertTemplateContent()
+function! s:InsertTemplateContent()
     let l:type = expand('%:e')
     if l:type == ""
         return
     endif
 
-    call InitDynamicMacro()
+    call <SID>InitDynamicMacro()
 
-    let l:lines = GetTemplate(l:type)
+    let l:lines = <SID>GetTemplate(l:type)
     let l:sub_macro_lines = []
     for l in l:lines
         let l:after_macro = l
@@ -143,6 +143,6 @@ endfunction
 
 augroup file_template
     au!
-    autocmd BufNewFile * call InsertTemplateContent()
+    autocmd BufNewFile * call <SID>InsertTemplateContent()
 augroup END
 
