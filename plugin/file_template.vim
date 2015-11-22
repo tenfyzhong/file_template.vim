@@ -26,8 +26,11 @@ let s:UNIX  = has("unix")  || has("macunix") || has("win32unix")
 
 let s:installation              = '*undefined*' 
 let s:plugin_dir                = expand('<sfile>:p:h:h')
-let s:locale_template_dir       = s:plugin_dir . '/templates/'
-let s:locale_template_define    = s:plugin_dir . '/templates/macro'
+let s:template_dir       = s:plugin_dir . '/templates/'
+let s:macro_file_name   = "macro"
+let s:template_macro    = s:template_dir . s:macro_file_name
+let s:local_template_dir = ""
+let s:has_local_setting = 0
 
 let s:file_template_map     = {}
 let s:file_no_template_map  = {}
@@ -88,8 +91,8 @@ endfunction
 " }}}
 
 " s:InsrtTemplate {{{
-function! s:InsertTemplate(type)
-    let l:filename = s:locale_template_dir . a:type . '.ftemplate'
+function! s:InsertTemplate(type, template_dir)
+    let l:filename = a:template_dir . a:type . '.ftemplate'
     if filereadable(l:filename)
         let l:lines = readfile(l:filename)
         let s:file_template_map[a:type] = l:lines
@@ -106,7 +109,17 @@ function! s:GetTemplate(type)
     endif
 
     if !has_key(s:file_template_map, a:type)
-        if !<SID>InsertTemplate(a:type)
+        " read local template file
+        " if success then return template
+        " else read plugin template file
+        " if no success then set has no template and return empty lists
+        if s:has_local_setting
+            if <SID>InsertTemplate(a:type, s:local_template_dir)
+                return s:file_template_map[a:type]
+            endif
+        endif
+
+        if !<SID>InsertTemplate(a:type, s:template_dir)
             let s:file_no_template_map[a:type] = 1
             return []
         endif
@@ -154,8 +167,26 @@ function! s:InsertTemplateContent()
 endfunction
 " }}}
 
+" s:InitLocalSetting {{{
+function s:InitLocalSetting()
+    if exists("g:local_template_dir") && 
+                \g:local_template_dir != "" && 
+                \isdirectory(expand(g:local_template_dir))
+
+        let s:local_template_dir = fnamemodify(g:local_template_dir, ":p")
+        let s:has_local_setting = 1
+
+        let l:local_template_macro = s:local_template_dir . s:macro_file_name 
+        if filereadable(l:local_template_macro)
+            let s:template_macro = l:local_template_macro
+        endif
+    endif
+endfunction
+" }}}
+
+call <SID>InitLocalSetting()
 call <SID>InsertIgnoreFileSuffx()
-call <SID>InitStaticMacro(s:locale_template_define)
+call <SID>InitStaticMacro(s:template_macro)
 
 augroup file_template
     au!
