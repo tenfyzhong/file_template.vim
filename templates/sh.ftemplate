@@ -5,7 +5,8 @@
 #   usage: ./|FILE|
 #   brief:  
 #  author: |AUTHOR|
-# created: |DATETIME|, |EMAIL|
+#   email: |EMAIL|
+# created: |DATETIME|
 #
 #################################################################
 

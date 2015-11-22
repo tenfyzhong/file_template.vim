@@ -2,6 +2,7 @@
 "    file: |FILE|
 "   brief: 
 " VIM Version: 7.4
-"  author: |AUTHOR|, |EMAIL|
+"  author: |AUTHOR|
+"   email: |EMAIL|
 " created: |DATETIME|
 "==============================================================
