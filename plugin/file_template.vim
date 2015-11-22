@@ -7,6 +7,7 @@
 " Date: 2015-11-9
 "==============================================================
 
+" optional {{{
 if v:version < 700
     echohl WarningMsg | echo 'plugin file_template.vim needs Vim version >= 7' | echohl None
     finish
@@ -15,10 +16,10 @@ endif
 if exists("g:FILE_TEMPLATE_VERSION") 
     finish
 endif
+" }}}
 
+" variable {{{
 let g:FILE_TEMPLATE_VERSION = "1.0.0"
-
-"===  FUNCTION  ===============================================
 
 let s:MSWIN = has("win16") || has("win32")   || has("win64") || has("w       in95")
 let s:UNIX  = has("unix")  || has("macunix") || has("win32unix")
@@ -33,7 +34,9 @@ let s:file_no_template_map  = {}
 let s:macro_value_map       = {}
 let s:has_init_macro        = 0
 let s:has_init_ignore_suffix = 0
+" }}}
 
+" substitute '/' to '\' in windows {{{
 if s:MSWIN
     " ============ MS Windows ================
     if match(substitute(expand(<"sfile">), '\', '/', 'g'),
@@ -43,7 +46,9 @@ if s:MSWIN
         let s:plugin_dir        = substitute(s:plugin_dir, '\', '/', 'g')
     endif
 endif
+" }}}
 
+" s:InitStaticMacro {{{
 function! s:InitStaticMacro(macro_file)
     if s:has_init_macro == 1
         return
@@ -64,7 +69,9 @@ function! s:InitStaticMacro(macro_file)
         endfor
     endif
 endfunction
+" }}}
 
+" s:InitDynamicMacros {{{
 function! s:InitDynamicMacro()
     " init time use function strftime
     let l:datetime      = strftime("%Y %m %d %T")
@@ -78,7 +85,9 @@ function! s:InitDynamicMacro()
     let s:macro_value_map['|FILE|'] = expand('%:t')
     let s:macro_value_map['|DATETIME|'] = l:time_itmes[0] . '-' . l:time_itmes[1] . '-' . l:time_itmes[2] . ' ' . l:time_itmes[3]
 endfunction
+" }}}
 
+" s:InsrtTemplate {{{
 function! s:InsertTemplate(type)
     let l:filename = s:locale_template_dir . a:type . '.ftemplate'
     if filereadable(l:filename)
@@ -88,7 +97,9 @@ function! s:InsertTemplate(type)
     endif
     return 0
 endfunction
+" }}}
 
+" s:GetTemplate {{{
 function! s:GetTemplate(type)
     if has_key(s:file_no_template_map, a:type)
         return []
@@ -103,7 +114,9 @@ function! s:GetTemplate(type)
 
     return s:file_template_map[a:type]
 endfunction
+" }}}
 
+" s:InsertIgnoreFileSuffx {{{
 function! s:InsertIgnoreFileSuffx()
     if s:has_init_ignore_suffix == 0
         let s:has_init_ignore_suffix = 1
@@ -115,10 +128,9 @@ function! s:InsertIgnoreFileSuffx()
         endif
     endif
 endfunction
+" }}}
 
-call <SID>InsertIgnoreFileSuffx()
-call <SID>InitStaticMacro(s:locale_template_define)
-
+" s:InsertTemplateContent {{{
 function! s:InsertTemplateContent()
     let l:type = expand('%:e')
     if l:type == ""
@@ -140,6 +152,10 @@ function! s:InsertTemplateContent()
     endfor
     call append(0, l:sub_macro_lines)
 endfunction
+" }}}
+
+call <SID>InsertIgnoreFileSuffx()
+call <SID>InitStaticMacro(s:locale_template_define)
 
 augroup file_template
     au!
