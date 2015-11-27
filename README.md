@@ -18,7 +18,7 @@ file template
 ## 定制
 g:file\_template\_ignore\_filetype:     
 必须是列表类型，后缀间用逗号隔开  
-要忽略的文件后缀，对这些后缀的文件不插入模板  
+要忽略的文件类型，对这些类型的文件不插入模板  
 eg:  
 let g:file\_template\_ignore\_filetype = ['cpp', 'c', 'sh']   
           
