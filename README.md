@@ -16,11 +16,11 @@ file template
 有几个固定的宏：|YEAR|, |MONTH|, |DAY|, |TIME|, |FILE|, |DATETIME|  
 
 ## 定制
-g:file\_template\_ignore\_file\_suffix:   
+g:file\_template\_ignore\_filetype:     
 必须是列表类型，后缀间用逗号隔开  
 要忽略的文件后缀，对这些后缀的文件不插入模板  
 eg:  
-let g:file\_template\_ignore\_file\_suffix = ['sh', 'cpp', 'c', 'cxx', 'h']   
+let g:file\_template\_ignore\_filetype = ['cpp', 'c', 'sh']   
           
 
 g:local\_template\_dir:  

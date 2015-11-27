@@ -33,10 +33,10 @@ let s:local_template_dir = ""
 let s:has_local_setting = 0
 
 let s:file_template_map     = {}
-let s:file_no_template_map  = {}
+let s:filetype_no_template_map  = {}
 let s:macro_value_map       = {}
 let s:has_init_macro        = 0
-let s:has_init_ignore_suffix = 0
+let s:has_init_ignore_filetype = 0
 " }}}
 
 " substitute '/' to '\' in windows {{{
@@ -104,7 +104,7 @@ endfunction
 
 " s:GetTemplate {{{
 function! s:GetTemplate(type)
-    if has_key(s:file_no_template_map, a:type)
+    if has_key(s:filetype_no_template_map, a:type)
         return []
     endif
 
@@ -120,7 +120,7 @@ function! s:GetTemplate(type)
         endif
 
         if !<SID>InsertTemplate(a:type, s:template_dir)
-            let s:file_no_template_map[a:type] = 1
+            let s:filetype_no_template_map[a:type] = 1
             return []
         endif
     endif
@@ -129,14 +129,14 @@ function! s:GetTemplate(type)
 endfunction
 " }}}
 
-" s:InsertIgnoreFileSuffx {{{
-function! s:InsertIgnoreFileSuffx()
-    if s:has_init_ignore_suffix == 0
-        let s:has_init_ignore_suffix = 1
+" s:InsertIgnoreFiletype {{{
+function! s:InsertIgnoreFiletype()
+    if s:has_init_ignore_filetype == 0
+        let s:has_init_ignore_filetype = 1
 
-        if exists("g:file_template_ignore_file_suffix")
-            for suffix in g:file_template_ignore_file_suffix
-                let s:file_no_template_map[suffix] = 1
+        if exists("g:file_template_ignore_filetype")
+            for suffix in g:file_template_ignore_filetype
+                let s:filetype_no_template_map[suffix] = 1
             endfor
         endif
     endif
@@ -145,7 +145,7 @@ endfunction
 
 " s:InsertTemplateContent {{{
 function! s:InsertTemplateContent()
-    let l:type = expand('%:e')
+    let l:type = &filetype
     if l:type == ""
         return
     endif
@@ -154,8 +154,8 @@ function! s:InsertTemplateContent()
 
     let l:lines = <SID>GetTemplate(l:type)
     let l:sub_macro_lines = []
-    for l in l:lines
-        let l:after_macro = l
+    for line in l:lines
+        let l:after_macro = line
         let l:keys = keys(s:macro_value_map)
         for k in l:keys
             let l:value = get(s:macro_value_map, k, '')
@@ -185,7 +185,7 @@ endfunction
 " }}}
 
 call <SID>InitLocalSetting()
-call <SID>InsertIgnoreFileSuffx()
+call <SID>InsertIgnoreFiletype()
 call <SID>InitStaticMacro(s:template_macro)
 
 augroup file_template
