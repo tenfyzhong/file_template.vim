@@ -21,7 +21,7 @@ endif
 " variable {{{
 let g:FILE_TEMPLATE_VERSION = "1.0.0"
 
-let s:MSWIN = has("win16") || has("win32")   || has("win64") || has("w       in95")
+let s:MSWIN = has("win16") || has("win32")   || has("win64") || has("win95")
 let s:UNIX  = has("unix")  || has("macunix") || has("win32unix")
 
 let s:installation              = '*undefined*' 
