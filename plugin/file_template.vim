@@ -84,9 +84,9 @@ function! s:InitDynamicMacro()
         let s:macro_value_map['|MONTH|']  = l:time_itmes[1]
         let s:macro_value_map['|DAY|']    = l:time_itmes[2]
         let s:macro_value_map['|TIME|']   = l:time_itmes[3]
+        let s:macro_value_map['|DATETIME|'] = l:time_itmes[0] . '-' . l:time_itmes[1] . '-' . l:time_itmes[2] . ' ' . l:time_itmes[3]
     endif
     let s:macro_value_map['|FILE|'] = expand('%:t')
-    let s:macro_value_map['|DATETIME|'] = l:time_itmes[0] . '-' . l:time_itmes[1] . '-' . l:time_itmes[2] . ' ' . l:time_itmes[3]
 endfunction
 " }}}
 
