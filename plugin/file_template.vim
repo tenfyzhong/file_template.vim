@@ -42,12 +42,8 @@ let s:has_init_ignore_filetype = 0
 " substitute '/' to '\' in windows {{{
 if s:MSWIN
     " ============ MS Windows ================
-    if match(substitute(expand(<"sfile">), '\', '/', 'g'),
-        substitute(expand("$HOME"), '\', '/', 'g')) == 0
-        " USER INSTALLATION ASSUMED
-        let s:installation      = "local"
-        let s:plugin_dir        = substitute(s:plugin_dir, '\', '/', 'g')
-    endif
+    let s:installation      = "local"
+    let s:plugin_dir        = substitute(s:plugin_dir, '\', '/', 'g')
 endif
 " }}}
 
