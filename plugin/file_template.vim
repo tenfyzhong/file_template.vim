@@ -189,3 +189,4 @@ augroup file_template
     autocmd BufNewFile * call <SID>InsertTemplateContent()
 augroup END
 
+command! -nargs=0 InsertTemplate call <SID>InsertTemplateContent()
