@@ -1,0 +1,21 @@
+/**
+ * @file |FILE|
+ * @brief  
+ * @author |AUTHOR|
+ * @email |EMAIL|
+ * @created |DATETIME|
+ */
+
+/* statement */
+%{
+%}
+
+/* regular */
+%%
+%%
+
+/* c code */
+int main(int argc, char *argv[])
+{
+    return 0;
+}
