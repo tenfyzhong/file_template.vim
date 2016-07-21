@@ -5,6 +5,8 @@
  * @email |EMAIL|
  * @created |DATETIME|
  */
+/* option */
+%option noyywrap
 
 /* statement */
 %{
