@@ -160,6 +160,7 @@ function! s:InsertTemplateContent()
         call add(l:sub_macro_lines, l:after_macro)
     endfor
     call append(0, l:sub_macro_lines)
+    set modified
 endfunction
 " }}}
 
