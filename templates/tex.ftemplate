@@ -1,0 +1,7 @@
+%-*- coding: UTF-8 -*-
+% |FILE|
+\documentclass[UTF8]{ctexart}
+
+\title{}
+\author{|AUTHOR|}
+\date{\today}
