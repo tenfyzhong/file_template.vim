@@ -1,8 +1,7 @@
-#!/bin/bash -
+#!/usr/bin/env bash
 #################################################################
 #
 #    file: |FILE|
-#   usage: ./|FILE|
 #   brief:  
 #  author: |AUTHOR|
 #   email: |EMAIL|
