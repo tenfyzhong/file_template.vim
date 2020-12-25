@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+#################################################################
+#
+#    file: |FILE|
+#   brief:  
+#  author: |AUTHOR|
+#   email: |EMAIL|
+# created: |DATETIME|
+#
+#################################################################
+
+set -o nounset                              # Treat unset variables as an error
+
+
