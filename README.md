@@ -1,5 +1,5 @@
 # file_template.vim
-file template
+迁移到 tenfyzhong/ftemplate.vim
 
 ## 安装  
 
